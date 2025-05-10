@@ -36,7 +36,12 @@ const { Server } = require('socket.io');
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server)({cors: {
+    methods: ['GET', 'POST'],
+        credentials: true,
+        allowedHeaders: ['my-custom-header'],
+
+    }});
 
 app.get('/', (req, res) => {
     res.send("Hello,it's ws server");
