@@ -23,9 +23,21 @@ app.get('/', (req, res) => {
 
 });
 
+const messages = [
+    {message: 'Hello Kolya', id: '23sfasdfa', user: {id: '323232fsdafds', name: 'Alex'} },
+    {message: 'Hello Alex', id: '43dsfasdfasd', user: {id: '423sasdfasdfasd', name: 'Kolya'} },
+    {message: 'Yo yo', id: '43dsfasdd', user: {id: '423sasdfasdfasd', name: 'Kolya'} }
+]
+
 io.on('connection', (socket) => {
     console.log('a user connected');
+    socket.on('client-message-sent', (message: string) => {
+        console.log(message)
+    })
+    socket.emit('init-messages-published', messages)
 });
+
+
 
 const PORT = process.env.PORT || 3009;
 
