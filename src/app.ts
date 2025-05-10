@@ -32,6 +32,8 @@ const { createServer } = require('node:http');
 const { join } = require('node:path');
 const { Server } = require('socket.io');
 
+
+
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
@@ -45,6 +47,8 @@ io.on('connection', (socket) => {
     console.log('a user connected');
 });
 
-server.listen(3009, () => {
-    console.log('server *:3009');
+const PORT = process.env.PORT || 3009;
+
+server.listen(PORT, () => {
+    console.log(`server *:${PORT}`);
 });
