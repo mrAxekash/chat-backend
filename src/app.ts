@@ -32,6 +32,9 @@ const messages = [
 io.on('connection', (socket) => {
     console.log('a user connected');
     socket.on('client-message-sent', (message: string) => {
+        if(typeof message !== 'string') {
+            return
+        }
         const newMessage = {message: message, id: '43dsfasddd' + new Date().getTime(), user: {id: '423sasdfasdfasd', name: 'Kolya'} }
         messages.push(newMessage)
 
