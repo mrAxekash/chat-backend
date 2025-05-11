@@ -29,13 +29,33 @@ const messages = [
     {message: 'Yo yo', id: '43dsfasdd', user: {id: '423sasdfasdfasd', name: 'Kolya'} }
 ]
 
+
+const usersState = new Map()
+
 io.on('connection', (socket) => {
+
+
+    socket.on('disconnect', () => {
+        usersState.delete(socket)
+    })
+
+    usersState.set(socket, {id: new Date().getTime().toString(), name: 'anonymous'});
+
+    socket.on('client-name-sent', (name: string) => {
+        const user = usersState.get(socket);
+        user.name = name
+
+    })
+
     console.log('a user connected');
     socket.on('client-message-sent', (message: string) => {
         if(typeof message !== 'string') {
             return
         }
-        const newMessage = {message: message, id: '43dsfasddd' + new Date().getTime(), user: {id: '423sasdfasdfasd', name: 'Kolya'} }
+
+        const user = usersState.get(socket)
+
+        const newMessage = {message: message, id: '43dsfasddd' + new Date().getTime(), user: {id: user.id, name: user.name} }
         messages.push(newMessage)
 
         io.emit('new-message-sent', newMessage)
